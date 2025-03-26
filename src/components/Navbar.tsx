@@ -5,6 +5,8 @@ import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useScroll } from '@/hooks/use-scroll';
 import { cn } from '@/lib/utils';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { LanguageSelector } from '@/components/LanguageSelector';
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -36,7 +38,7 @@ export function Navbar() {
       className={cn(
         "fixed top-0 w-full z-50 transition-all duration-300",
         isScrolled 
-          ? "bg-white/10 backdrop-blur-md border-b border-white/10 py-3" 
+          ? "bg-white/10 dark:bg-gray-950/10 backdrop-blur-md border-b border-white/10 dark:border-gray-800/10 py-3" 
           : "bg-transparent py-5"
       )}
     >
@@ -56,18 +58,23 @@ export function Navbar() {
               {item.label}
             </a>
           ))}
-          <LanguageSelector />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <LanguageSelector />
+          </div>
         </nav>
 
         {/* Mobile Menu Button */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="md:hidden"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </Button>
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </Button>
+        </div>
       </div>
 
       {/* Mobile Navigation */}
@@ -84,40 +91,13 @@ export function Navbar() {
                 {item.label}
               </a>
             ))}
-            <div className="px-4 py-2">
+            <div className="px-4 py-2 flex items-center gap-2">
               <LanguageSelector />
             </div>
           </div>
         </div>
       )}
     </header>
-  );
-}
-
-function LanguageSelector() {
-  return (
-    <div className="relative inline-block">
-      <select
-        className="appearance-none bg-muted text-foreground px-4 py-2 pr-8 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-        defaultValue="en"
-      >
-        <option value="en">English</option>
-        <option value="hi">हिन्दी</option>
-        <option value="mr">मराठी</option>
-        <option value="bn">বাংলা</option>
-        <option value="te">తెలుగు</option>
-        <option value="ta">தமிழ்</option>
-      </select>
-      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-foreground">
-        <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20">
-          <path
-            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-            clipRule="evenodd"
-            fillRule="evenodd"
-          ></path>
-        </svg>
-      </div>
-    </div>
   );
 }
 
