@@ -59,7 +59,7 @@ export function Hero({ onGetStarted }: HeroProps) {
                 variant="outline" 
                 size="lg" 
                 className="border-2"
-                onClick={() => document.getElementById('about')?.scrollIntoView()}
+                onClick={onGetStarted}
               >
                 Learn More
               </Button>
