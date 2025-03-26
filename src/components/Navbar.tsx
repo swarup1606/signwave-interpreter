@@ -27,10 +27,12 @@ export function Navbar() {
 
   const navItems = [
     { label: "Home", href: "/" },
-    { label: "Detect", href: "#detect" },
-    { label: "Learn", href: "#learn" },
-    { label: "Practice", href: "#practice" },
-    { label: "About", href: "#about" },
+    { label: "Dashboard", href: "/dashboard" },
+    { label: "Detect", href: "/detect" },
+    { label: "Learn", href: "/learn" },
+    { label: "Assistant", href: "/assistant" },
+    { label: "Practice", href: "/practice" },
+    { label: "About", href: "/about" },
   ];
 
   return (
@@ -50,13 +52,13 @@ export function Navbar() {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
           {navItems.map((item) => (
-            <a
+            <Link
               key={item.label}
-              href={item.href}
+              to={item.href}
               className="text-foreground/80 hover:text-foreground transition-colors font-medium"
             >
               {item.label}
-            </a>
+            </Link>
           ))}
           <div className="flex items-center gap-2">
             <ThemeToggle />
@@ -82,14 +84,14 @@ export function Navbar() {
         <div className="md:hidden fixed inset-0 top-16 bg-background z-40 animate-fade-in">
           <div className="flex flex-col p-4 gap-4">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.label}
-                href={item.href}
+                to={item.href}
                 className="text-lg px-4 py-3 hover:bg-muted rounded-md transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
             <div className="px-4 py-2 flex items-center gap-2">
               <LanguageSelector />

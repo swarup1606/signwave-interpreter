@@ -1,55 +1,50 @@
 
-import { useState, useEffect } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ChevronUp } from 'lucide-react';
 import TransitionLayout from '@/components/TransitionLayout';
-import { useScroll } from '@/hooks/use-scroll';
 import Navbar from '@/components/Navbar';
-import Tutorial from '@/components/Tutorial';
-import VirtualAssistant from '@/components/VirtualAssistant';
-import Practice from '@/components/Practice';
-import LanguageSelector from '@/components/LanguageSelector';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowRight, Languages, BookOpen, Bot, Activity, Info } from 'lucide-react';
 
 export function Dashboard() {
-  const { scrollY } = useScroll();
-  const [showScrollTop, setShowScrollTop] = useState(false);
-  const [activeSection, setActiveSection] = useState('detect');
-  
-  useEffect(() => {
-    setShowScrollTop(scrollY > 300);
-    
-    const sections = ['detect', 'learn', 'bot', 'practice'];
-    
-    // Find which section is currently in view
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
-    
-    sections.forEach(id => {
-      const element = document.getElementById(id);
-      if (element) observer.observe(element);
-    });
-    
-    return () => {
-      sections.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) observer.unobserve(element);
-      });
-    };
-  }, [scrollY]);
-  
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-  
+  const features = [
+    {
+      title: "Sign Language Detection",
+      description: "Detect and translate sign language in real-time with our advanced recognition system.",
+      icon: <Languages className="h-10 w-10 text-primary" />,
+      link: "/detect",
+      linkText: "Start Detection"
+    },
+    {
+      title: "Learn Sign Language",
+      description: "Interactive tutorials to learn sign language through guided lessons and examples.",
+      icon: <BookOpen className="h-10 w-10 text-primary" />,
+      link: "/learn",
+      linkText: "Start Learning"
+    },
+    {
+      title: "Virtual Assistant",
+      description: "Communicate with our AI-powered assistant that demonstrates signs for any phrase.",
+      icon: <Bot className="h-10 w-10 text-primary" />,
+      link: "/assistant",
+      linkText: "Chat with Assistant"
+    },
+    {
+      title: "Practice & Test",
+      description: "Test your sign language skills with interactive exercises and fingerspelling practice.",
+      icon: <Activity className="h-10 w-10 text-primary" />,
+      link: "/practice",
+      linkText: "Start Practice"
+    },
+    {
+      title: "About SignWave",
+      description: "Learn about our mission to make sign language accessible to everyone.",
+      icon: <Info className="h-10 w-10 text-primary" />,
+      link: "/about",
+      linkText: "Learn More"
+    }
+  ];
+
   return (
     <TransitionLayout>
       <Navbar />
@@ -62,113 +57,35 @@ export function Dashboard() {
                 Sign Language Interpreter
               </h1>
               <p className="text-lg text-muted-foreground">
-                Start exploring and using our advanced sign language tools
+                Explore our comprehensive suite of sign language tools
               </p>
-              
-              <Tabs 
-                defaultValue={activeSection} 
-                onValueChange={(value) => {
-                  document.getElementById(value)?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                value={activeSection}
-                className="w-full max-w-xl mx-auto mt-8"
-              >
-                <TabsList className="grid grid-cols-4 w-full">
-                  <TabsTrigger value="detect">Detect</TabsTrigger>
-                  <TabsTrigger value="learn">Learn</TabsTrigger>
-                  <TabsTrigger value="bot">Assistant</TabsTrigger>
-                  <TabsTrigger value="practice">Practice</TabsTrigger>
-                </TabsList>
-              </Tabs>
             </div>
           </div>
         </header>
         
-        <main>
-          <section id="detect" className="py-16 bg-white dark:bg-gray-950">
-            <div className="container mx-auto px-4">
-              <div className="max-w-5xl mx-auto text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  Sign Language <span className="gradient-text">Detection</span>
-                </h2>
-                <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-                  Detect and translate sign language in real-time with our advanced recognition system.
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                <div className="bg-card rounded-xl overflow-hidden border shadow-lg p-6 text-center flex flex-col items-center justify-center space-y-4">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                    <span className="text-2xl font-bold text-primary">हिं</span>
-                  </div>
-                  <h3 className="text-xl font-medium">Hindi Sign Language</h3>
-                  <p className="text-muted-foreground">
-                    Detect and interpret Indian Sign Language (ISL) gestures and phrases.
-                  </p>
-                  <Button className="mt-4">Launch Detector</Button>
-                </div>
-                
-                <div className="bg-card rounded-xl overflow-hidden border shadow-lg p-6 text-center flex flex-col items-center justify-center space-y-4">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                    <span className="text-2xl font-bold text-primary">En</span>
-                  </div>
-                  <h3 className="text-xl font-medium">English Sign Language</h3>
-                  <p className="text-muted-foreground">
-                    Detect and interpret American Sign Language (ASL) gestures and phrases.
-                  </p>
-                  <Button className="mt-4">Launch Detector</Button>
-                </div>
-              </div>
-              
-              <div className="mt-12 text-center">
-                <div className="inline-flex items-center gap-2 text-muted-foreground text-sm">
-                  Change Language: <LanguageSelector variant="minimal" />
-                </div>
-              </div>
+        <main className="py-8">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-6xl mx-auto">
+              {features.map((feature, index) => (
+                <Card key={index} className="border shadow-md hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                      {feature.icon}
+                    </div>
+                    <CardTitle>{feature.title}</CardTitle>
+                    <CardDescription>{feature.description}</CardDescription>
+                  </CardHeader>
+                  <CardFooter>
+                    <Button asChild className="w-full">
+                      <Link to={feature.link}>
+                        {feature.linkText} <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
             </div>
-          </section>
-          
-          <Tutorial />
-          
-          <VirtualAssistant />
-          
-          <Practice />
-          
-          <section id="about" className="py-16 bg-gradient-to-b from-transparent to-blue-50 dark:from-transparent dark:to-blue-950">
-            <div className="container mx-auto px-4">
-              <div className="max-w-4xl mx-auto text-center">
-                <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                  About <span className="gradient-text">SignWave</span>
-                </h2>
-                <p className="text-lg text-muted-foreground mb-8">
-                  SignWave is a cutting-edge 3D sign language interpreter designed to bridge communication gaps and make sign language accessible to everyone. Our mission is to empower both the hearing and deaf communities by providing intuitive tools for learning, practicing, and communicating through sign language.
-                </p>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-                  <div className="p-6 rounded-xl bg-card shadow-sm border">
-                    <h3 className="text-xl font-medium mb-2">Accessibility</h3>
-                    <p className="text-muted-foreground">
-                      Making sign language accessible to everyone through technology.
-                    </p>
-                  </div>
-                  
-                  <div className="p-6 rounded-xl bg-card shadow-sm border">
-                    <h3 className="text-xl font-medium mb-2">Education</h3>
-                    <p className="text-muted-foreground">
-                      Providing comprehensive learning tools for sign language education.
-                    </p>
-                  </div>
-                  
-                  <div className="p-6 rounded-xl bg-card shadow-sm border">
-                    <h3 className="text-xl font-medium mb-2">Innovation</h3>
-                    <p className="text-muted-foreground">
-                      Using 3D technology to create realistic and accurate sign language representations.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+          </div>
         </main>
         
         <footer className="py-8 bg-blue-50 dark:bg-blue-950 border-t border-gray-200 dark:border-gray-800">
@@ -195,17 +112,6 @@ export function Dashboard() {
           </div>
         </footer>
       </div>
-      
-      {showScrollTop && (
-        <Button 
-          variant="secondary" 
-          size="icon" 
-          className="fixed bottom-8 right-8 rounded-full shadow-lg opacity-80 hover:opacity-100 z-50 animate-fade-in"
-          onClick={scrollToTop}
-        >
-          <ChevronUp className="h-5 w-5" />
-        </Button>
-      )}
     </TransitionLayout>
   );
 }
